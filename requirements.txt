@@ -1,0 +1,41 @@
+# High-concurrency Order Monitoring System Dependencies
+# Python Version: 3.7.9
+
+# Database
+PyMySQL==1.0.2
+DBUtils==3.0.2
+
+# Redis
+redis==4.5.5
+hiredis==2.0.0
+
+# Async and Concurrency
+asyncio-pool==0.6.0
+
+# Logging
+colorlog==6.6.0
+
+# Data Processing
+dataclasses-json==0.5.14
+
+# Time Processing
+python-dateutil==2.8.2
+
+# Configuration Management
+python-dotenv==0.21.1
+
+# System Monitoring
+psutil==5.9.0
+
+# Development and Testing Tools (Optional)
+pytest==7.2.2
+pytest-asyncio==0.20.3
+pytest-cov==4.0.0
+
+# Code Quality Tools (Optional)
+flake8==5.0.4
+black==22.12.0
+
+# Performance Analysis Tools (Optional)
+memory-profiler==0.60.0
+line-profiler==4.0.2
