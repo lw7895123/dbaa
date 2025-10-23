@@ -1,0 +1,8 @@
+# Framework Dependencies
+# Core third-party libraries used in the framework folder
+
+# Database
+mysql-connector-python>=8.0.33
+
+# Cache
+redis>=4.5.4

@@ -84,7 +84,7 @@ class UserLoggerManager:
             file_handler.setLevel(getattr(logging, config.LOG_CONFIG['level']))
             
             formatter = logging.Formatter(
-                f'%(asctime)s - USER_{user_id} - %(levelname)s - %(message)s',
+                f'%(asctime)s - USER_{user_id} : %(lineno)d - %(levelname)s - %(message)s',
                 config.LOG_CONFIG['date_format']
             )
             file_handler.setFormatter(formatter)

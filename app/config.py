@@ -38,7 +38,7 @@ class Config:
     REDIS_CONFIG = {
         'host': os.getenv('REDIS_HOST', 'localhost'),
         'port': int(os.getenv('REDIS_PORT', 6379)),
-        'password': os.getenv('REDIS_PASSWORD', None),
+        'password': os.getenv('REDIS_PASSWORD', '123456789'),
         'db': int(os.getenv('REDIS_DB', 0)),
         'decode_responses': True,
         'socket_connect_timeout': 5,
@@ -61,7 +61,7 @@ class Config:
     # 日志配置
     LOG_CONFIG = {
         'level': os.getenv('LOG_LEVEL', 'INFO'),
-        'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        'format': '%(asctime)s - %(name)s : %(lineno)d - %(levelname)s - %(message)s',
         'date_format': '%Y-%m-%d %H:%M:%S',
         'log_dir': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs'),
         'max_file_size': 100 * 1024 * 1024,  # 100MB

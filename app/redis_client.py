@@ -69,7 +69,7 @@ class RedisManager:
         try:
             if isinstance(value, (dict, list)):
                 value = json.dumps(value, ensure_ascii=False)
-            return self.client.set(key, value, ex=ex)
+            return self.get_client().set(key, value, ex=ex)
         except Exception as e:
             logger.error(f"Redis设置键值失败 {key}: {e}")
             return False
@@ -77,7 +77,7 @@ class RedisManager:
     def get(self, key: str, default: Any = None) -> Any:
         """获取键值"""
         try:
-            value = self.client.get(key)
+            value = self.get_client().get(key)
             if value is None:
                 return default
             try:
@@ -91,7 +91,7 @@ class RedisManager:
     def delete(self, *keys: str) -> int:
         """删除键"""
         try:
-            return self.client.delete(*keys)
+            return self.get_client().delete(*keys)
         except Exception as e:
             logger.error(f"Redis删除键失败 {keys}: {e}")
             return 0
@@ -99,7 +99,7 @@ class RedisManager:
     def exists(self, key: str) -> bool:
         """检查键是否存在"""
         try:
-            return self.client.exists(key) > 0
+            return self.get_client().exists(key) > 0
         except Exception as e:
             logger.error(f"Redis检查键存在失败 {key}: {e}")
             return False
@@ -107,7 +107,7 @@ class RedisManager:
     def expire(self, key: str, time: int) -> bool:
         """设置键过期时间"""
         try:
-            return self.client.expire(key, time)
+            return self.get_client().expire(key, time)
         except Exception as e:
             logger.error(f"Redis设置过期时间失败 {key}: {e}")
             return False
@@ -122,7 +122,7 @@ class RedisManager:
                     json_mapping[k] = json.dumps(v, ensure_ascii=False)
                 else:
                     json_mapping[k] = str(v)
-            return self.client.hset(name, mapping=json_mapping)
+            return self.get_client().hset(name, mapping=json_mapping)
         except Exception as e:
             logger.error(f"Redis设置哈希表失败 {name}: {e}")
             return 0
@@ -130,7 +130,7 @@ class RedisManager:
     def hget(self, name: str, key: str, default: Any = None) -> Any:
         """获取哈希表字段值"""
         try:
-            value = self.client.hget(name, key)
+            value = self.get_client().hget(name, key)
             if value is None:
                 return default
             try:
@@ -144,7 +144,7 @@ class RedisManager:
     def hgetall(self, name: str) -> Dict[str, Any]:
         """获取哈希表所有字段"""
         try:
-            data = self.client.hgetall(name)
+            data = self.get_client().hgetall(name)
             result = {}
             for k, v in data.items():
                 try:
@@ -165,7 +165,7 @@ class RedisManager:
                     json_values.append(json.dumps(value, ensure_ascii=False))
                 else:
                     json_values.append(str(value))
-            return self.client.lpush(name, *json_values)
+            return self.get_client().lpush(name, *json_values)
         except Exception as e:
             logger.error(f"Redis列表推入失败 {name}: {e}")
             return 0
@@ -174,7 +174,7 @@ class RedisManager:
         """从列表右侧弹出元素"""
         try:
             if count is None:
-                value = self.client.rpop(name)
+                value = self.get_client().rpop(name)
                 if value is None:
                     return None
                 try:
@@ -182,7 +182,7 @@ class RedisManager:
                 except (json.JSONDecodeError, TypeError):
                     return value
             else:
-                values = self.client.rpop(name, count)
+                values = self.get_client().rpop(name, count)
                 result = []
                 for value in values:
                     try:
@@ -197,7 +197,7 @@ class RedisManager:
     def llen(self, name: str) -> int:
         """获取列表长度"""
         try:
-            return self.client.llen(name)
+            return self.get_client().llen(name)
         except Exception as e:
             logger.error(f"Redis获取列表长度失败 {name}: {e}")
             return 0
@@ -211,7 +211,7 @@ class RedisManager:
                     json_values.append(json.dumps(value, ensure_ascii=False))
                 else:
                     json_values.append(str(value))
-            return self.client.sadd(name, *json_values)
+            return self.get_client().sadd(name, *json_values)
         except Exception as e:
             logger.error(f"Redis集合添加失败 {name}: {e}")
             return 0
@@ -225,7 +225,7 @@ class RedisManager:
                     json_values.append(json.dumps(value, ensure_ascii=False))
                 else:
                     json_values.append(str(value))
-            return self.client.srem(name, *json_values)
+            return self.get_client().srem(name, *json_values)
         except Exception as e:
             logger.error(f"Redis集合移除失败 {name}: {e}")
             return 0
@@ -233,7 +233,7 @@ class RedisManager:
     def smembers(self, name: str) -> set:
         """获取集合所有成员"""
         try:
-            members = self.client.smembers(name)
+            members = self.get_client().smembers(name)
             result = set()
             for member in members:
                 try:
